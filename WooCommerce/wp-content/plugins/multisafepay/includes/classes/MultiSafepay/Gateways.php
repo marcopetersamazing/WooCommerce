@@ -3,7 +3,7 @@ class MultiSafepay_Gateways
 {
     public static function register()
     {
-        add_option( 'multisafepay_version', '3.0.0', '', 'yes' );
+        add_option( 'multisafepay_version', '3.0.1', '', 'yes' );
 
         add_filter('woocommerce_payment_gateways'               , array(__CLASS__, '_getGateways'));
         add_filter('woocommerce_payment_gateways_settings'      , array(__CLASS__, '_addGlobalSettings'),1);
@@ -285,7 +285,7 @@ class MultiSafepay_Gateways
         if (!empty($orderid)) {
             $order  = new WC_Order( $orderid);
         }else{
-            $order  = new WC_Order( $transactie->order_id );
+            $order  = new WC_Order( $transactie->var2 );
         }
 
         if ($transactie->fastcheckout == 'YES' && empty($orderid)) {
@@ -599,6 +599,7 @@ class MultiSafepay_Gateways
                 "currency"              => get_woocommerce_currency(),
                 "amount"                => round(WC()->cart->subtotal * 100),
                 "description"           => 'Order #' . $order_id,
+                "var2"                  => $order_id,
                 "items"                 => $fco->setItemList ($fco->getItemsFCO()),
                 "manual"                => false,
                 "seconds_active"        => $fco->getTimeActive(),
