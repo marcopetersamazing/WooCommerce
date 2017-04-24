@@ -285,7 +285,7 @@ class MultiSafepay_Gateways
         if (!empty($orderid)) {
             $order  = new WC_Order( $orderid);
         }else{
-            $order  = new WC_Order( $transactie->order_id );
+            $order  = new WC_Order( $transactie->var2 );
         }
 
         if ($transactie->fastcheckout == 'YES' && empty($orderid)) {
@@ -599,6 +599,7 @@ class MultiSafepay_Gateways
                 "currency"              => get_woocommerce_currency(),
                 "amount"                => round(WC()->cart->subtotal * 100),
                 "description"           => 'Order #' . $order_id,
+                "var2"                  => $order_id,
                 "items"                 => $fco->setItemList ($fco->getItemsFCO()),
                 "manual"                => false,
                 "seconds_active"        => $fco->getTimeActive(),
