@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * DISCLAIMER
@@ -19,9 +20,9 @@
  * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 class API_Autoload
 {
+
     public static function autoload($class_name)
     {
         $name = str_replace("Object", "Object/", $class_name);
@@ -41,7 +42,7 @@ class API_Autoload
     {
         return spl_autoload_unregister(array(__CLASS__, "autoload"));
     }
-}
 
+}
 
 //APIAutoloader::register();

@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * DISCLAIMER
@@ -21,6 +22,7 @@
  */
 class Client
 {
+
     public $orders;
     public $issuers;
     public $transactions;
@@ -72,10 +74,11 @@ class Client
     /*
      * Parses and sets customer address
      */
+
     public function parseCustomerAddress($street_address)
     {
         list($address, $apartment) = $this->parseAddress($street_address);
-        return array ($address, $apartment);
+        return array($address, $apartment);
     }
 
     /**
@@ -91,38 +94,37 @@ class Client
     /*
      * Parses and splits up an address in street and housenumber
      */
-     
+
     private function parseAddress($adress, $seperaatAddition = false)
     {
-        $street         = '';
-        $number         = '';
+        $street = '';
+        $number = '';
         $numberAddition = '';
 
-        $results        = array();
+        $results = array();
         $pattern_adress = "/^(.*)\s(\d+)(.*)/";
 
         preg_match($pattern_adress, trim($adress), $results);
-        if (count ($results) == 0 ){
-            $street         = trim($adress);
-        }else{
-            $street         = trim((isset($results[1])) ? $results[1] : '');
-            $number         = trim((isset($results[2])) ? $results[2] : '');
+        if (count($results) == 0) {
+            $street = trim($adress);
+        } else {
+            $street = trim((isset($results[1])) ? $results[1] : '');
+            $number = trim((isset($results[2])) ? $results[2] : '');
             $numberAddition = trim((isset($results[3])) ? $results[3] : '');
         }
 
-        if ( $seperaatAddition === true) {
-            $pattern_addition     = '/^([\s|-]*)(.*)/';
+        if ($seperaatAddition === true) {
+            $pattern_addition = '/^([\s|-]*)(.*)/';
             $replacement_addition = '$2';
-            $numberAddition = trim (preg_replace($pattern_addition, $replacement_addition, $numberAddition));
-        }else{
+            $numberAddition = trim(preg_replace($pattern_addition, $replacement_addition, $numberAddition));
+        } else {
             $number .= $numberAddition;
             $numberAddition = '';
         }
 
         return array($street, $number, $numberAddition);
-    //  return array('street' => $street, 'number' => $number, 'numberAddition' => $numberAddition);
+        //  return array('street' => $street, 'number' => $number, 'numberAddition' => $numberAddition);
     }
-
 
     private function rstrpos($haystack, $needle, $offset = null)
     {
@@ -149,7 +151,7 @@ class Client
 
         $url = $this->api_url . $api_method;
         $ch = curl_init($url);
-    
+
         $request_headers = array(
             "Accept: application/json",
             "api_key:" . $this->api_key,
@@ -179,10 +181,11 @@ class Client
 
         if (curl_errno($ch)) {
             $str = __('Unable to communicatie with the MultiSafepay payment server', 'multisafepay') . '('
-                 . curl_errno($ch) . '): ' . curl_error($ch) . '.';
+                    . curl_errno($ch) . '): ' . curl_error($ch) . '.';
             throw new Exception($str);
         }
         curl_close($ch);
         return $body;
     }
+
 }

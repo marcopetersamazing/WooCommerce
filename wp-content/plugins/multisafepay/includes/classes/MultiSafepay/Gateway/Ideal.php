@@ -20,7 +20,6 @@
  * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 class MultiSafepay_Gateway_Ideal extends MultiSafepay_Gateway_Abstract
 {
 
@@ -41,7 +40,7 @@ class MultiSafepay_Gateway_Ideal extends MultiSafepay_Gateway_Abstract
 
     public static function getTitle()
     {
-        $settings =  self::getSettings();
+        $settings = self::getSettings();
         return ($settings['title']);
     }
 
@@ -77,11 +76,11 @@ class MultiSafepay_Gateway_Ideal extends MultiSafepay_Gateway_Abstract
         if (is_array($warning))
             $this->form_fields['warning'] = $warning;
 
-        $this->form_fields['direct'] = array(   'title'         => __('Enable',  'multisafepay'),
-                                                'type'          => 'checkbox',
-                                                'label'         => sprintf(__('Direct %s', 'multisafepay'), $this->getName()),
-                                                'description'   => __('Enable of disable the selection of the preferred bank within the website.', 'multisafepay'),
-                                                'default'       => 'yes' );
+        $this->form_fields['direct'] = array('title' => __('Enable', 'multisafepay'),
+            'type' => 'checkbox',
+            'label' => sprintf(__('Direct %s', 'multisafepay'), $this->getName()),
+            'description' => __('Enable of disable the selection of the preferred bank within the website.', 'multisafepay'),
+            'default' => 'yes');
         parent::init_settings($this->form_fields);
     }
 
@@ -105,15 +104,14 @@ class MultiSafepay_Gateway_Ideal extends MultiSafepay_Gateway_Abstract
 
                 $msg = htmlspecialchars($e->getMessage());
                 $this->write_log($msg);
-                wc_add_notice( $msg, 'error');
-
+                wc_add_notice($msg, 'error');
             }
 
-            $description .= __('Choose your bank', 'multisafepay').'<br/>';
+            $description .= __('Choose your bank', 'multisafepay') . '<br/>';
             $description .= '<select id="ideal_issuer" name="ideal_issuer" class="required-entry">';
-            $description .= '<option value="">'.__('Please choose...', 'multisafepay').'</option>';
+            $description .= '<option value="">' . __('Please choose...', 'multisafepay') . '</option>';
             foreach ($issuers as $issuer) {
-                $description .= '<option value="'.$issuer->code.'">'.$issuer->description.'</option>';
+                $description .= '<option value="' . $issuer->code . '">' . $issuer->description . '</option>';
             }
             $description .= '</select>';
             $description .= '</p>';
@@ -121,7 +119,7 @@ class MultiSafepay_Gateway_Ideal extends MultiSafepay_Gateway_Abstract
 
         $description_text = $this->get_option('description');
         if (!empty($description_text))
-            $description .= '<p>'.$description_text.'</p>';
+            $description .= '<p>' . $description_text . '</p>';
 
         echo $description;
     }
@@ -131,7 +129,7 @@ class MultiSafepay_Gateway_Ideal extends MultiSafepay_Gateway_Abstract
         $settings = get_option('woocommerce_multisafepay_ideal_settings');
 
         if ($settings['direct'] == 'yes' && empty($_POST['ideal_issuer'])) {
-            wc_add_notice(__('Error: ', 'multisafepay').' '.__('Please select an issuer.'), 'error');
+            wc_add_notice(__('Error: ', 'multisafepay') . ' ' . __('Please select an issuer.'), 'error');
             return false;
         }
         return true;
@@ -139,9 +137,10 @@ class MultiSafepay_Gateway_Ideal extends MultiSafepay_Gateway_Abstract
 
     public function process_payment($order_id)
     {
-        $this->type        = $this->getType();
+        $this->type = $this->getType();
         $this->GatewayInfo = $this->getGatewayInfo($order_id);
 
         return parent::process_payment($order_id);
     }
+
 }

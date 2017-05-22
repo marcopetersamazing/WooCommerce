@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * DISCLAIMER
@@ -21,6 +22,7 @@
  */
 class ObjectIssuers extends ObjectCore
 {
+
     public $success;
     public $data;
 
@@ -32,4 +34,5 @@ class ObjectIssuers extends ObjectCore
 
         return $this->data;
     }
+
 }

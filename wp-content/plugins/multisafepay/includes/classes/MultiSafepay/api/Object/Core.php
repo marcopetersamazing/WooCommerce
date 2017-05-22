@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * DISCLAIMER
@@ -19,9 +20,9 @@
  * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 class ObjectCore
 {
+
     protected $mspapi;
     public $result;
 
@@ -63,7 +64,7 @@ class ObjectCore
     {
 
         $body = $this->mspapi->processAPIRequest($http_method, $api_method, $http_body);
-        
+
         if (!($object = json_decode($body))) {
             throw new Exception("'{$body}'.");
         }
@@ -75,4 +76,5 @@ class ObjectCore
 
         return $object;
     }
+
 }

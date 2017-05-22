@@ -20,7 +20,6 @@
  * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 class MultiSafepay_Gateway_Banktrans extends MultiSafepay_Gateway_Abstract
 {
 
@@ -41,7 +40,7 @@ class MultiSafepay_Gateway_Banktrans extends MultiSafepay_Gateway_Abstract
 
     public static function getTitle()
     {
-        $settings =  self::getSettings();
+        $settings = self::getSettings();
         return ($settings['title']);
     }
 
@@ -66,19 +65,21 @@ class MultiSafepay_Gateway_Banktrans extends MultiSafepay_Gateway_Abstract
 
         $warning = $this->getWarning();
 
-        if (is_array($warning)) $this->form_fields['warning'] = $warning;
+        if (is_array($warning))
+            $this->form_fields['warning'] = $warning;
 
         $this->form_fields['direct'] = array(
-                'title'     => __('Direct', 'woocommerce'),
-                'type'      => 'checkbox',
-                'label'     => sprintf(__('Direct %s', 'multisafepay'), $this->getName()),
-                'default'   => 'no' );
+            'title' => __('Direct', 'woocommerce'),
+            'type' => 'checkbox',
+            'label' => sprintf(__('Direct %s', 'multisafepay'), $this->getName()),
+            'default' => 'no');
 
-        $this->form_fields['direct'] = array(   'title'         => __('Enable',  'multisafepay'),
-                                                'type'          => 'checkbox',
-                                                'label'         => sprintf(__('Direct %s', 'multisafepay'), $this->getName()),
-                                                'description' => __('If enabled, the consumer receives an e-mail with payment details, no extra credentals are needed during checkout.', 'multisafepay'),
-                                                'default'       => 'no' );
+        $this->form_fields['direct'] = array('title' => __('Enable', 'multisafepay'),
+            'type' => 'checkbox',
+            'label' => sprintf(__('Direct %s', 'multisafepay'), $this->getName()),
+            'description' => __('If enabled, the consumer receives an e-mail with payment details, no extra credentals are needed during checkout.', 'multisafepay'),
+            'default' => 'no');
         parent::init_settings($this->form_fields);
     }
+
 }

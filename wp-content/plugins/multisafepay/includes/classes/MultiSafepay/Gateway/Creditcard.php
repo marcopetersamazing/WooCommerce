@@ -20,7 +20,6 @@
  * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 class MultiSafepay_Gateway_Creditcard extends MultiSafepay_Gateway_Abstract
 {
 
@@ -41,7 +40,7 @@ class MultiSafepay_Gateway_Creditcard extends MultiSafepay_Gateway_Abstract
 
     public static function getTitle()
     {
-        $settings =  self::getSettings();
+        $settings = self::getSettings();
         return ($settings['title']);
     }
 
@@ -61,7 +60,7 @@ class MultiSafepay_Gateway_Creditcard extends MultiSafepay_Gateway_Abstract
 
         $description_text = $this->get_option('description');
         if (!empty($description_text))
-            $description .= '<p>'.$description_text.'</p>';
+            $description .= '<p>' . $description_text . '</p>';
 
         $msp = new Client();
 
@@ -77,7 +76,7 @@ class MultiSafepay_Gateway_Creditcard extends MultiSafepay_Gateway_Abstract
             wc_add_notice($msg, 'error');
         }
 
-        $description .= __('Select CreditCard', 'multisafepay').'<br/>';
+        $description .= __('Select CreditCard', 'multisafepay') . '<br/>';
         $description .= '<select id="cc_issuer" name="cc_issuer" class="required-entry">';
 
         foreach ($gateways as $gateway) {
@@ -86,7 +85,7 @@ class MultiSafepay_Gateway_Creditcard extends MultiSafepay_Gateway_Abstract
                 case 'AMEX':
                 case 'MAESTRO':
                 case 'MASTERCARD':
-                    $description .= '<option value="'.$gateway->id.'">'.$gateway->description.'</option>';
+                    $description .= '<option value="' . $gateway->id . '">' . $gateway->description . '</option>';
             }
         }
 
@@ -99,9 +98,10 @@ class MultiSafepay_Gateway_Creditcard extends MultiSafepay_Gateway_Abstract
     public function validate_fields()
     {
         if (empty($_POST['cc_issuer'])) {
-            wc_add_notice(__('Error: ', 'multisafepay').' '.__('Please select a CreditCard.', 'multisafepay'));
+            wc_add_notice(__('Error: ', 'multisafepay') . ' ' . __('Please select a CreditCard.', 'multisafepay'));
             return false;
         }
         return true;
     }
+
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * DISCLAIMER
@@ -19,9 +20,9 @@
  * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 class ObjectGateways extends ObjectCore
 {
+
     public $success;
     public $data;
 
@@ -33,4 +34,5 @@ class ObjectGateways extends ObjectCore
 
         return $this->data;
     }
+
 }

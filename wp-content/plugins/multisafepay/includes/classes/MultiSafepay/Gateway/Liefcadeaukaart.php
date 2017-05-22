@@ -20,7 +20,6 @@
  * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 class MultiSafepay_Gateway_Liefcadeaukaart extends MultiSafepay_Gateway_Abstract
 {
 
@@ -41,7 +40,7 @@ class MultiSafepay_Gateway_Liefcadeaukaart extends MultiSafepay_Gateway_Abstract
 
     public static function getTitle()
     {
-        $settings =  self::getSettings();
+        $settings = self::getSettings();
         return ($settings['title']);
     }
 
@@ -54,4 +53,5 @@ class MultiSafepay_Gateway_Liefcadeaukaart extends MultiSafepay_Gateway_Abstract
     {
         return "redirect";
     }
+
 }

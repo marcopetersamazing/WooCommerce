@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * DISCLAIMER
@@ -19,7 +20,6 @@
  * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 class ObjectOrders extends ObjectCore
 {
 
@@ -28,7 +28,7 @@ class ObjectOrders extends ObjectCore
 
     public function patch($body, $endpoint = '')
     {
-		$result = parent::post(json_encode($body), $endpoint);
+        $result = parent::post(json_encode($body), $endpoint);
         $this->success = $result->success;
         $this->data = $result->data;
         return $result;
@@ -44,7 +44,7 @@ class ObjectOrders extends ObjectCore
 
     public function post($body, $endpoint = 'orders')
     {
-		$result = parent::post(json_encode($body), $endpoint);
+        $result = parent::post(json_encode($body), $endpoint);
         $this->success = $result->success;
         $this->data = $result->data;
 
@@ -55,4 +55,5 @@ class ObjectOrders extends ObjectCore
     {
         return $this->data->payment_url;
     }
+
 }
