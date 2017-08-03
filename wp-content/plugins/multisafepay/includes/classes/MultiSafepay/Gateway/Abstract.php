@@ -203,7 +203,7 @@ class Multisafepay_Gateway_Abstract extends WC_Payment_Gateway
             "currency" => get_woocommerce_currency(),
             "amount" => round($order->get_total() * 100),
             "description" => 'Order #' . $order->get_order_number(),
-            "var1" => $order->order_key,
+            "var1" => $order->get_order_key(),
             "var2" => $order_id,
             "items" => $this->setItemList($order->get_items()),
             "manual" => false,
@@ -212,7 +212,7 @@ class Multisafepay_Gateway_Abstract extends WC_Payment_Gateway
             "payment_options" => array(
                 "notification_url" => add_query_arg('type=initial', '', $this->getNurl()),
                 "redirect_url" => add_query_arg('utm_nooverride', '1', $this->get_return_url($order)),
-                "cancel_url" => htmlspecialchars_decode(add_query_arg('key', $order->id, $order->get_cancel_order_url())),
+                "cancel_url" => htmlspecialchars_decode(add_query_arg('key', $order->get_id(), $order->get_cancel_order_url())),
                 "close_window" => true
             ),
             "customer" => $this->setCustomer($msp, $order),
@@ -257,7 +257,7 @@ class Multisafepay_Gateway_Abstract extends WC_Payment_Gateway
         $order = new WC_Order($order_id);
 
         $endpoint = 'orders/' . $order_id . '/refunds';
-        $refund = array("currency" => $order->get_order_currency(),
+        $refund = array("currency" => $order->get_currency(),
             "amount" => $amount * 100,
             "description" => $reason);
 
@@ -444,8 +444,8 @@ class Multisafepay_Gateway_Abstract extends WC_Payment_Gateway
             'user_agent' => $_SERVER['HTTP_USER_AGENT'],
             'birthday' => $gebdat,
             'bankaccount' => $account,
-            'phone' => $order->billing_phone,
-            'email' => $order->billing_email,
+            'phone' => $order->get_billing_phone(),
+            'email' => $order->get_billing_email(),
             'gender' => $gender) );
     }
 
@@ -461,46 +461,46 @@ class Multisafepay_Gateway_Abstract extends WC_Payment_Gateway
 
     public function setDelivery($msp, $order)
     {
-        $address = isset($order->shipping_address_1) ? $order->shipping_address_1 : '';
+        $address = $order->get_shipping_address_1() ? $order->get_shipping_address_1() : '';
         list ($street, $houseNumber) = $msp->parseCustomerAddress($address);
 
         return ( array("locale" => $this->getLocale(),
             "ip_address" => $_SERVER['REMOTE_ADDR'],
             "referrer" => $_SERVER['HTTP_REFERER'],
             "user_agent" => $_SERVER['HTTP_USER_AGENT'],
-            "first_name" => isset($order->shipping_first_name) ? $order->shipping_first_name : '',
-            "last_name" => isset($order->shipping_last_name) ? $order->shipping_last_name : '',
+            "first_name" => $order->get_shipping_first_name() ? $order->get_shipping_first_name() : '',
+            "last_name" => $order->get_shipping_last_name() ? $order->get_shipping_last_name() : '',
             "address1" => $street,
-            "address2" => isset($order->shipping_address_2) ? $order->shipping_address_2 : '',
+            "address2" => $order->get_shipping_address_2() ? $order->get_shipping_address_2() : '',
             "house_number" => $houseNumber,
-            "zip_code" => isset($order->shipping_postcode) ? $order->shipping_postcode : '',
-            "city" => isset($order->shipping_city) ? $order->shipping_city : '',
-            "state" => isset($order->shipping_state) ? $order->shipping_state : '',
-            "country" => isset($order->shipping_country) ? $order->shipping_country : '',
-            "phone" => isset($order->shipping_phone) ? $order->shipping_phone : '',
-            "email" => isset($order->shipping_email) ? $order->shipping_email : ''));
+            "zip_code" => $order->get_shipping_postcode() ? $order->get_shipping_postcode() : '',
+            "city" => $order->get_shipping_city() ? $order->get_shipping_city() : '',
+            "state" => $order->get_shipping_state() ? $order->get_shipping_state() : '',
+            "country" => $order->get_shipping_country() ? $order->get_shipping_country() : '',
+            "phone" => $order->get_billing_phone() ? $order->get_billing_phone() : '',
+            "email" => $order->get_billing_email() ? $order->get_billing_email() : ''));
     }
 
     public function setCustomer($msp, $order)
     {
-        $address = isset($order->billing_address_1) ? $order->billing_address_1 : '';
+        $address = $order->get_billing_address_1() ? $order->get_billing_address_1() : '';
         list ($street, $houseNumber) = $msp->parseCustomerAddress($address);
 
         return ( array("locale" => $this->getLocale(),
             "ip_address" => $_SERVER['REMOTE_ADDR'],
             "referrer" => $_SERVER['HTTP_REFERER'],
             "user_agent" => $_SERVER['HTTP_USER_AGENT'],
-            "first_name" => isset($order->billing_first_name) ? $order->billing_first_name : '',
-            "last_name" => isset($order->billing_last_name) ? $order->billing_last_name : '',
+            "first_name" => $order->get_billing_first_name() ? $order->get_billing_first_name() : '',
+            "last_name" => $order->get_billing_last_name() ? $order->get_billing_last_name() : '',
             "address1" => $street,
-            "address2" => isset($order->billing_address_2) ? $order->billing_address_2 : '',
+            "address2" => $order->get_billing_address_2() ? $order->get_billing_address_2() : '',
             "house_number" => $houseNumber,
-            "zip_code" => isset($order->billing_postcode) ? $order->billing_postcode : '',
-            "city" => isset($order->billing_city) ? $order->billing_city : '',
-            "state" => isset($order->billing_state) ? $order->billing_state : '',
-            "country" => isset($order->billing_country) ? $order->billing_country : '',
-            "phone" => isset($order->billing_phone) ? $order->billing_phone : '',
-            "email" => isset($order->billing_email) ? $order->billing_email : ''));
+            "zip_code" => $order->get_billing_postcode() ? $order->get_billing_postcode() : '',
+            "city" => $order->get_billing_city() ? $order->get_billing_city() : '',
+            "state" => $order->get_billing_state() ? $order->get_billing_state() : '',
+            "country" => $order->get_billing_country() ? $order->get_billing_country() : '',
+            "phone" => $order->get_billing_phone() ? $order->get_billing_phone() : '',
+            "email" => $order->get_billing_email() ? $order->get_billing_email() : ''));
     }
 
     public function setGoogleAnalytics()

@@ -321,7 +321,7 @@ class MultiSafepay_Gateways
 
                 $order = wc_create_order();
 
-                $wpdb->query("INSERT INTO " . $wpdb->prefix . 'woocommerce_multisafepay' . " (trixid, orderid, status) VALUES ('" . $transactionid . "', '" . $order->id . "', '" . $status . "'  )");
+                $wpdb->query("INSERT INTO " . $wpdb->prefix . 'woocommerce_multisafepay' . " (trixid, orderid, status) VALUES ('" . $transactionid . "', '" . $order->get_id() . "', '" . $status . "'  )");
 
                 $billing_address = array();
                 $billing_address['firstname'] = $transactie->customer->first_name;
@@ -408,16 +408,16 @@ class MultiSafepay_Gateways
 
                         $code = $sku->Coupon - code;
                         $unit_price = (float) str_replace('-', '', $product->unit_price);
-                        update_post_meta($order->id, '_cart_discount', $unit_price);
-                        update_post_meta($order->id, '_order_total', $amount);
+                        update_post_meta($order->get_id(), '_cart_discount', $unit_price);
+                        update_post_meta($order->get_id(), '_order_total', $amount);
 
 
-                        update_post_meta($order->id, '_cart_discount_tax', 0);
+                        update_post_meta($order->get_id(), '_cart_discount_tax', 0);
 
                         $order->calculate_taxes();
-                        $order_data = get_post_meta($order->id);
+                        $order_data = get_post_meta($order->get_id());
                         $new_order_tax = round($order_data['_order_tax'][0] - (($unit_price * (1 + $tax_percentage)) - $unit_price), 2);
-                        update_post_meta($order->id, '_order_tax', $new_order_tax);
+                        update_post_meta($order->get_id(), '_order_tax', $new_order_tax);
                         $id = $order->add_coupon($code, $unit_price, $applied_discount_tax);
                     }
 
@@ -427,15 +427,15 @@ class MultiSafepay_Gateways
                       if (!empty($sku->ordercoupon)) {
                       $code = $sku->ordercoupon;
                       $amount = (float) str_replace('-', '', $product['unit_price']);
-                      update_post_meta($order->id, '_cart_discount', $amount);
-                      update_post_meta($order->id, '_order_total', $details['transaction']['amount'] / 100);
+                      update_post_meta($order->get_id(), '_cart_discount', $amount);
+                      update_post_meta($order->get_id(), '_order_total', $details['transaction']['amount'] / 100);
                       $tax_percentage = (($details['transaction']['amount'] / 100) - ($details['order-total']['total'] - $details['total-tax']['total'] + $details['shipping']['cost'])) / ($details['order-total']['total'] - $details['total-tax']['total'] + $details['shipping']['cost']);
                       $applied_discount_tax = round(($amount * (1 + $tax_percentage)) - $amount, 2);
-                      update_post_meta($order->id, '_cart_discount_tax', $applied_discount_tax);
+                      update_post_meta($order->get_id(), '_cart_discount_tax', $applied_discount_tax);
                       $order->calculate_taxes();
-                      $order_data = get_post_meta($order->id);
+                      $order_data = get_post_meta($order->get_id());
                       $new_order_tax = round($order_data['_order_tax'][0] - (($amount * (1 + $tax_percentage)) - $amount), 2);
-                      update_post_meta($order->id, '_order_tax', $new_order_tax);
+                      update_post_meta($order->get_id(), '_order_tax', $new_order_tax);
                       $id = $order->add_coupon($code, $amount, $applied_discount_tax);
                       }
 
@@ -447,7 +447,7 @@ class MultiSafepay_Gateways
                 }
 
 
-                update_post_meta($order->id, '_order_total', $transactie->amount / 100);
+                update_post_meta($order->get_id(), '_order_total', $transactie->amount / 100);
                 $order->calculate_taxes();
 
                 foreach ($order->get_items('tax') as $key => $value) {
@@ -478,12 +478,12 @@ class MultiSafepay_Gateways
                 }
             case 'completed':
                 if ($order->get_total() != $amount) {
-                    if ($order->status != 'processing') {
+                    if ($order->get_status() != 'processing') {
                         $order->update_status('wc-on-hold', sprintf(__('Validation error: Multisafepay amounts do not match (gross %s).', 'multisafepay'), $amount));
                     }
                 }
 
-                if ($order->status != 'processing' && $order->status != 'completed' && $order->status != 'wc-completed') {
+                if ($order->get_status() != 'processing' && $order->get_status() != 'completed' && $order->get_status() != 'wc-completed') {
                     $order->add_order_note(sprintf(__('Multisafepay payment status %s', 'multisafepay'), $status));
                     $order->payment_complete();
                     $woocommerce->cart->empty_cart();
@@ -504,7 +504,7 @@ class MultiSafepay_Gateways
                 break;
             case 'uncleared':
 
-                if ($order->status == 'on-hold')
+                if ($order->get_status() == 'on-hold')
                     break;
 
                 $order->update_status('wc-on-hold');
@@ -514,7 +514,7 @@ class MultiSafepay_Gateways
             case 'reserved':
             case 'declined':
             case 'expired':
-                if ($order->status == 'failed')
+                if ($order->get_status() == 'failed')
                     break;
 
                 $order->update_status('wc-failed', sprintf(__('Payment %s via Multisafepay.', 'multisafepay'), strtolower($status)));

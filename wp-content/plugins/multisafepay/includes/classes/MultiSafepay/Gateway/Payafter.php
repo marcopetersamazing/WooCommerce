@@ -136,7 +136,7 @@ class MultiSafepay_Gateway_Payafter extends MultiSafepay_Gateway_Abstract
         if (!empty($settings['maxamount']) && $woocommerce->cart->total > $settings['maxamount'])
             unset($gateways['multisafepay_payafter']);
 
-        if (isset($woocommerce->customer) && $woocommerce->customer->get_country() != 'NL')
+        if (isset($woocommerce->customer) && $woocommerce->customer->get_billing_country() != 'NL')
             unset($gateways['multisafepay_payafter']);
 
 
